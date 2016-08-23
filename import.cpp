@@ -52,13 +52,12 @@ int main(int argc, char *argv[])
 //    QCoreApplication a(argc, argv);
 
 //    cout << argc << argv[0] << endl;
-    if(argc<=1 || strcmp(argv[1],"-h"))
+    if(argc<=1)
     {
         cout << "This program allows you to import lists to mailman." << endl\
              << "Use it like this:" << endl\
              << "import {listname|filename importlist} {owner-email} {list-password}" << endl;
     } else {
-
         newlist(argv[1],argv[2],argv[3]);
 
     //./bin/config_list -i {path_to_cfg} {listname}
