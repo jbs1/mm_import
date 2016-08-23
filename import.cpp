@@ -27,7 +27,7 @@ QString al=QString("%1:              \"|/var/lib/mailman/mail/mailman post %1\"\
 %1-request:      \"|/var/lib/mailman/mail/mailman request %1\"\n\
 %1-subscribe:    \"|/var/lib/mailman/mail/mailman subscribe %1\"\n\
 %1-unsubscribe:  \"|/var/lib/mailman/mail/mailman unsubscribe %1\"\n\
-").arg(ln);
+\n").arg(ln);
 
         alias_file.write(al.toUtf8());
         alias_file.close();
@@ -52,7 +52,6 @@ int main(int argc, char *argv[])
 {
 //    QCoreApplication a(argc, argv);
 
-//    cout << argc << argv[0] << endl;
     if(argc<=1)
     {
         cout << "This program allows you to import lists to mailman." << endl\
@@ -60,10 +59,6 @@ int main(int argc, char *argv[])
              << "import {listname|filename importlist} {owner-email} {list-password} {importlist dir}" << endl;
     } else {
         newlist(argv[1],argv[2],argv[3]);
-
-    //./bin/config_list -i {path_to_cfg} {listname}
-    //    run ./bin/withlist -l -r fix_url {listname}
-    //    run ./bin/add_members -r {path_member_file} -w n -a n {listname}
 
         QProcess p_cflist;
         p_cflist.start("./bin/config_list", QStringList() << "-i" << QString(argv[4]) << QString(argv[1]));
@@ -77,8 +72,6 @@ int main(int argc, char *argv[])
         QProcess p_addmem;
         p_addmem.start("./bin/add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[4]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
         p_addmem.waitForFinished();
-
-
     }
 
 
