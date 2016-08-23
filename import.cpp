@@ -10,7 +10,7 @@ using namespace std;
 
 void newlist(QString ln, QString mail, QString pw){
     QProcess p_newlist;
-    p_newlist.start("./newlist", QStringList() << "-q" << ln << mail << pw);
+    p_newlist.start("./bin/newlist", QStringList() << "-q" << ln << mail << pw);
 
     QFile alias_file("/etc/aliases");
     alias_file.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -59,19 +59,19 @@ int main(int argc, char *argv[])
 
     newlist("test","dsads","sdasdas");
 
-//./config_list -i {path_to_cfg} {listname}
-//    run ./withlist -l -r fix_url {listname}
-//    run ./add_members -r {path_member_file} -w n -a n {listname}
+//./bin/config_list -i {path_to_cfg} {listname}
+//    run ./bin/withlist -l -r fix_url {listname}
+//    run ./bin/add_members -r {path_member_file} -w n -a n {listname}
 
     QProcess p_cflist;
-    p_cflist.start("./config_list", QStringList() << "-i" << QString(argv[1]) << QString(argv[1]));
+    p_cflist.start("./bin/config_list", QStringList() << "-i" << QString(argv[1]) << QString(argv[1]));
 
     QProcess p_fixurl;
-    p_fixurl.start("./withlist", QStringList() << "-l" << "-r" << "fix_url" << QString(argv[1]));
+    p_fixurl.start("./bin/withlist", QStringList() << "-l" << "-r" << "fix_url" << QString(argv[1]));
 
 
     QProcess p_addmem;
-    p_addmem.start("./add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
+    p_addmem.start("./bin/add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
 
 
 
