@@ -13,4 +13,5 @@ SOURCES += \
 DISTFILES += \
     .gitignore \
     LICENSE \
-    README.md
+    README.md \
+    aliases
