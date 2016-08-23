@@ -37,9 +37,11 @@ QString al=QString("%1:              \"|/var/lib/mailman/mail/mailman post %1\"\
 
     QProcess p_newal;
     p_newal.start("newaliases");
+    p_newal.waitForFinished();
 
     QProcess p_ps;
     p_ps.start("/etc/init.d/postfix", QStringList() << "restart");
+    p_ps.waitForFinished();
 }
 
 
@@ -55,7 +57,7 @@ int main(int argc, char *argv[])
         cout << "This program allows you to import lists to mailman." << endl\
              << "Use it like this:" << endl\
              << "import {listname|filename importlist} {owner-email} {list-password}" << endl;
-    }
+    } else {
 
     newlist("test","dsads","sdasdas");
 
@@ -65,16 +67,19 @@ int main(int argc, char *argv[])
 
     QProcess p_cflist;
     p_cflist.start("./bin/config_list", QStringList() << "-i" << QString(argv[1]) << QString(argv[1]));
+    p_cflist.waitForFinished();
 
     QProcess p_fixurl;
     p_fixurl.start("./bin/withlist", QStringList() << "-l" << "-r" << "fix_url" << QString(argv[1]));
+    p_fixurl.waitForFinished();
 
 
     QProcess p_addmem;
     p_addmem.start("./bin/add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
+    p_addmem.waitForFinished();
 
 
-
+}
 
 
 
