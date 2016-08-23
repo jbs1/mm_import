@@ -4,31 +4,42 @@
 #include <string>
 #include <QProcess>
 #include <QString>
+#include <QDebug>
 using namespace std;
 
 
-
-//void newlist(){
-//    QFile set_file;
-//    set_file.setFileName(setjson);
-//    set_file.open(QIODevice::WriteOnly | QIODevice::Text);
-//    if(set_file.isOpen()){
-//        QJsonDocument set_doc(set_ob);
-//        set_file.write(set_doc.toJson());
-//        set_file.close();
-//    } else {
-//        qCritical()<<"Settings file could not be opened!";
-//    }
-//}
-
-
-//./newlist -q {listname} {owner-email} {list-password}
-
 void newlist(QString ln, QString mail, QString pw){
-    QProcess process;
-    process.start("./newlist", QStringList() << "-q" << ln << mail << pw);
-    QString out(process.readAllStandardOutput());
-    cout << out.toStdString() << "sadsaasd" << endl;
+    QProcess p_newlist;
+    p_newlist.start("./newlist", QStringList() << "-q" << ln << mail << pw);
+
+    QFile alias_file("/etc/aliases");
+    alias_file.open(QIODevice::WriteOnly | QIODevice::Text);
+
+    if(alias_file.isOpen()){
+QString al=QString("%1:              \"|/var/lib/mailman/mail/mailman post %1\"\n\
+%1-admin:        \"|/var/lib/mailman/mail/mailman admin %1\"\n\
+%1-bounces:      \"|/var/lib/mailman/mail/mailman bounces %1\"\n\
+%1-confirm:      \"|/var/lib/mailman/mail/mailman confirm %1\"\n\
+%1-join:         \"|/var/lib/mailman/mail/mailman join %1\"\n\
+%1-leave:        \"|/var/lib/mailman/mail/mailman leave %1\"\n\
+%1-owner:        \"|/var/lib/mailman/mail/mailman owner %1\"\n\
+%1-request:      \"|/var/lib/mailman/mail/mailman request %1\"\n\
+%1-subscribe:    \"|/var/lib/mailman/mail/mailman subscribe %1\"\n\
+%1-unsubscribe:  \"|/var/lib/mailman/mail/mailman unsubscribe %1\"\n\
+").arg(ln);
+
+        alias_file.write(al.toUtf8());
+        alias_file.close();
+    } else {
+        qCritical()<<"Aliases file could not be opened!";
+        exit(1);
+    }
+
+    QProcess p_newal;
+    p_newal.start("newaliases");
+
+    QProcess p_ps;
+    p_ps.start("/etc/init.d/postfix", QStringList() << "restart");
 }
 
 
@@ -48,7 +59,19 @@ int main(int argc, char *argv[])
 
     newlist("test","dsads","sdasdas");
 
+//./config_list -i {path_to_cfg} {listname}
+//    run ./withlist -l -r fix_url {listname}
+//    run ./add_members -r {path_member_file} -w n -a n {listname}
 
+    QProcess p_cflist;
+    p_cflist.start("./config_list", QStringList() << "-i" << QString(argv[1]) << QString(argv[1]));
+
+    QProcess p_fixurl;
+    p_fixurl.start("./withlist", QStringList() << "-l" << "-r" << "fix_url" << QString(argv[1]));
+
+
+    QProcess p_addmem;
+    p_addmem.start("./add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
 
 
 

@@ -1,16 +1,10 @@
-{0}:              "|/var/lib/mailman/mail/mailman post {0}"
-{0}-admin:        "|/var/lib/mailman/mail/mailman admin {0}"
-{0}-bounces:      "|/var/lib/mailman/mail/mailman bounces {0}"
-{0}-confirm:      "|/var/lib/mailman/mail/mailman confirm {0}"
-{0}-join:         "|/var/lib/mailman/mail/mailman join {0}"
-{0}-leave:        "|/var/lib/mailman/mail/mailman leave {0}"
-{0}-owner:        "|/var/lib/mailman/mail/mailman owner {0}"
-{0}-request:      "|/var/lib/mailman/mail/mailman request {0}"
-{0}-subscribe:    "|/var/lib/mailman/mail/mailman subscribe {0}"
-{0}-unsubscribe:  "|/var/lib/mailman/mail/mailman unsubscribe {0}"
-
-
-
-dsasd
-
-sasasa
+%1:              \"|/var/lib/mailman/mail/mailman post %1\"\n\
+%1-admin:        \"|/var/lib/mailman/mail/mailman admin %1\"\n\
+%1-bounces:      \"|/var/lib/mailman/mail/mailman bounces %1\"\n\
+%1-confirm:      \"|/var/lib/mailman/mail/mailman confirm %1\"\n\
+%1-join:         \"|/var/lib/mailman/mail/mailman join %1\"\n\
+%1-leave:        \"|/var/lib/mailman/mail/mailman leave %1\"\n\
+%1-owner:        \"|/var/lib/mailman/mail/mailman owner %1\"\n\
+%1-request:      \"|/var/lib/mailman/mail/mailman request %1\"\n\
+%1-subscribe:    \"|/var/lib/mailman/mail/mailman subscribe %1\"\n\
+%1-unsubscribe:  \"|/var/lib/mailman/mail/mailman unsubscribe %1\"\n\
