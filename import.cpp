@@ -59,27 +59,27 @@ int main(int argc, char *argv[])
              << "import {listname|filename importlist} {owner-email} {list-password}" << endl;
     } else {
 
-    newlist("test","dsads","sdasdas");
+        newlist(argv[1],argv[2],argv[3]);
 
-//./bin/config_list -i {path_to_cfg} {listname}
-//    run ./bin/withlist -l -r fix_url {listname}
-//    run ./bin/add_members -r {path_member_file} -w n -a n {listname}
+    //./bin/config_list -i {path_to_cfg} {listname}
+    //    run ./bin/withlist -l -r fix_url {listname}
+    //    run ./bin/add_members -r {path_member_file} -w n -a n {listname}
 
-    QProcess p_cflist;
-    p_cflist.start("./bin/config_list", QStringList() << "-i" << QString(argv[1]) << QString(argv[1]));
-    p_cflist.waitForFinished();
+        QProcess p_cflist;
+        p_cflist.start("./bin/config_list", QStringList() << "-i" << QString(argv[1]) << QString(argv[1]));
+        p_cflist.waitForFinished();
 
-    QProcess p_fixurl;
-    p_fixurl.start("./bin/withlist", QStringList() << "-l" << "-r" << "fix_url" << QString(argv[1]));
-    p_fixurl.waitForFinished();
-
-
-    QProcess p_addmem;
-    p_addmem.start("./bin/add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
-    p_addmem.waitForFinished();
+        QProcess p_fixurl;
+        p_fixurl.start("./bin/withlist", QStringList() << "-l" << "-r" << "fix_url" << QString(argv[1]));
+        p_fixurl.waitForFinished();
 
 
-}
+        QProcess p_addmem;
+        p_addmem.start("./bin/add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
+        p_addmem.waitForFinished();
+
+
+    }
 
 
 
