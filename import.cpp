@@ -72,6 +72,14 @@ int main(int argc, char *argv[])
         QProcess p_addmem;
         p_addmem.start("./bin/add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[4]) << "-w" << "n" << "-a" << "n" << QString(argv[1]));
         p_addmem.waitForFinished();
+
+//        QProcess p_genal;
+//        p_genal.start("./genaliases");
+//        p_genal.waitForFinished();
+
+        QProcess p_checkperm;
+        p_checkperm.start("./bin/check_perms", QStringList() << "-f");
+        p_checkperm.waitForFinished();
     }
 
 
