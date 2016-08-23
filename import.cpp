@@ -11,9 +11,10 @@ using namespace std;
 void newlist(QString ln, QString mail, QString pw){
     QProcess p_newlist;
     p_newlist.start("./bin/newlist", QStringList() << "-q" << ln << mail << pw);
+    p_newlist.waitForFinished();
 
     QFile alias_file("/etc/aliases");
-    alias_file.open(QIODevice::WriteOnly | QIODevice::Text);
+    alias_file.open(QIODevice::WriteOnly | QIODevice::Append);
 
     if(alias_file.isOpen()){
 QString al=QString("%1:              \"|/var/lib/mailman/mail/mailman post %1\"\n\
