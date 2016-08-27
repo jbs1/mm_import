@@ -57,7 +57,7 @@ void archive(QString listpath){
     QFile arc(QString("%1.mbox").arg(listpath));
     if(arc.exists()){
         QProcess p_ar;
-        p_ar.start("./bin/arch", QStringList() << get_listname(listpath) << QString("%1.mbox").arg(listpath));
+        p_ar.start("./bin/arch", QStringList() << get_listname(listpath) << QString("%1.mbox/%2.mbox").arg(listpath,get_listname(listpath)));
         p_ar.waitForFinished();
     }
 }
