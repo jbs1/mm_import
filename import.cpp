@@ -18,6 +18,7 @@ QString get_listname(QString path){
 
 void newlist(QString ln, QString mail, QString pw){
     QProcess p_newlist;
+    p_newlist.setProcessChannelMode(QProcess::ForwardedChannels);
     p_newlist.start("./bin/newlist", QStringList() << "-q" << ln << mail << pw);
     p_newlist.waitForFinished();
 
@@ -93,9 +94,10 @@ int main(int argc, char *argv[])
         p_addmem.waitForFinished();
         cout<< "ADDED MEMBERS: " << get_listname(argv[1]).toStdString() << endl;
 
-//        QProcess p_genal;
-//        p_genal.start("./genaliases");
-//        p_genal.waitForFinished();
+        QProcess p_genal;
+        p_genal.start("./genaliases");
+        p_genal.waitForFinished();
+        cout<< "EXEC GENAL: " << get_listname(argv[1]).toStdString() << endl;
 
         QProcess p_checkperm;
         p_checkperm.start("./bin/check_perms", QStringList() << "-f");
