@@ -6,6 +6,7 @@
 #include <QString>
 #include <QDebug>
 #include <QFileInfo>
+#include <QDir>
 using namespace std;
 
 
@@ -125,7 +126,7 @@ int main(int argc, char *argv[])
             QTextStream inlist(&importlist);
             while(!inlist.atEnd()){
 //                singleimport(QString("%1/%2").arg(get_listpath(argv[1]),inlist.readLine()),argv[2],argv[3],argv[4]);
-                cout << QString("%1/%2").arg(get_listpath(argv[1]),inlist.readLine()) << endl;
+                cout << QString("%1/%2").arg(get_listpath(argv[1]),inlist.readLine()).toStdString() << endl;
             }
 
         } else {
