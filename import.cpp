@@ -127,8 +127,7 @@ int main(int argc, char *argv[])
             while(!inlist.atEnd()){
                 QString l =inlist.readLine();
                 if(l.length()>1){
-//                singleimport(QString("%1/%2").arg(get_listpath(argv[1]),inlist.readLine()),argv[2],argv[3],argv[4]);
-                    cout << QString("%1/%2").arg(get_listpath(argv[1]),l).toStdString() << endl;
+                    singleimport(QString("%1/%2").arg(get_listpath(argv[1]),l),argv[2],argv[3],argv[4]);
                 }
             }
 
