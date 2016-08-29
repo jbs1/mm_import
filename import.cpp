@@ -64,6 +64,44 @@ void archive(QString listpath, QString mailmanpath){
 
 
 
+void singleimport(QString listpath, QString email, QString pw, QString mmdir){
+
+    newlist(get_listname(listpath),email,pw,mmdir);
+    cout<< "LIST CREATED: " << get_listname(listpath).toStdString() << endl;
+
+    QProcess p_cflist;
+    p_cflist.start(QString("%1/bin/config_list").arg(mmdir), QStringList() << "-i" << QString(listpath) << get_listname(listpath));
+    p_cflist.waitForFinished();
+    cout<< "LIST CONFIGURED: " << get_listname(listpath).toStdString() << endl;
+
+    QProcess p_fixurl;
+    p_fixurl.start(QString("%1/bin/withlist").arg(mmdir), QStringList() << "-l" << "-r" << "fix_url" << get_listname(listpath));
+    p_fixurl.waitForFinished();
+    cout<< "FIXED URL: " << get_listname(listpath).toStdString() << endl;
+
+
+    QProcess p_addmem;
+    p_addmem.start(QString("%1/bin/add_members").arg(mmdir), QStringList() << "-r" << QString("%1.subscribers").arg(listpath) << "-w" << "n" << "-a" << "n" << get_listname(listpath));
+    p_addmem.waitForFinished();
+    cout<< "ADDED MEMBERS: " << get_listname(listpath).toStdString() << endl;
+
+    QProcess p_genal;
+    p_genal.start("./genaliases");
+    p_genal.waitForFinished();
+    cout<< "EXEC GENAL: " << get_listname(listpath).toStdString() << endl;
+
+    QProcess p_checkperm;
+    p_checkperm.start(QString("%1/bin/check_perms").arg(mmdir), QStringList() << "-f");
+    p_checkperm.waitForFinished();
+    cout<< "FIXED PERMS: " << get_listname(listpath).toStdString() << endl;
+
+
+    archive(listpath,mmdir);
+    cout<< "ADDED ARCHIVES: " << get_listname(listpath).toStdString() << endl;
+}
+
+
+
 int main(int argc, char *argv[])
 {
 //    QCoreApplication a(argc, argv);
@@ -74,40 +112,7 @@ int main(int argc, char *argv[])
              << "Use it like this:" << endl\
              << "import <filename/path import> <owner-email> <list-password> <mailman-dir>" << endl;
     } else {
-        newlist(get_listname(argv[1]),argv[2],argv[3],argv[4]);
-        cout<< "LIST CREATED: " << get_listname(argv[1]).toStdString() << endl;
-
-        QProcess p_cflist;
-        p_cflist.start(QString("%1/bin/config_list").arg(argv[4]), QStringList() << "-i" << QString(argv[1]) << get_listname(argv[1]));
-        p_cflist.waitForFinished();
-        cout<< "LIST CONFIGURED: " << get_listname(argv[1]).toStdString() << endl;
-
-        QProcess p_fixurl;
-        p_fixurl.start(QString("%1/bin/withlist").arg(argv[4]), QStringList() << "-l" << "-r" << "fix_url" << get_listname(argv[1]));
-        p_fixurl.waitForFinished();
-        cout<< "FIXED URL: " << get_listname(argv[1]).toStdString() << endl;
-
-
-        QProcess p_addmem;
-        p_addmem.start(QString("%1/bin/add_members").arg(argv[4]), QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << get_listname(argv[1]));
-        p_addmem.waitForFinished();
-        cout<< "ADDED MEMBERS: " << get_listname(argv[1]).toStdString() << endl;
-
-        QProcess p_genal;
-        p_genal.start("./genaliases");
-        p_genal.waitForFinished();
-        cout<< "EXEC GENAL: " << get_listname(argv[1]).toStdString() << endl;
-
-        QProcess p_checkperm;
-        p_checkperm.start(QString("%1/bin/check_perms").arg(argv[4]), QStringList() << "-f");
-        p_checkperm.waitForFinished();
-        cout<< "FIXED PERMS: " << get_listname(argv[1]).toStdString() << endl;
-
-
-        archive(argv[1],argv[4]);
-        cout<< "ADDED ARCHIVES: " << get_listname(argv[1]).toStdString() << endl;
-
-
+        singleimport(argv[1]),argv[2],argv[3],argv[4]);
     }
 
 
