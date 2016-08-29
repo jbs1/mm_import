@@ -15,6 +15,13 @@ QString get_listname(QString path){
     return name;
 }
 
+QString get_listpath(QString path){
+    QFileInfo file(path);
+    QString name=file.dir().path();
+    return name;
+}
+
+
 
 void newlist(QString ln, QString mail, QString pw, QString mmpath){
     QProcess p_newlist;
@@ -112,10 +119,19 @@ int main(int argc, char *argv[])
              << "Use it like this:" << endl\
              << "import <filename/path import> <owner-email> <list-password> <mailman-dir>" << endl;
     } else {
-        singleimport(argv[1],argv[2],argv[3],argv[4]);
+        QFile importlist(argv[1]);
+        importlist.open(QIODevice::ReadOnly | QIODevice::Text);
+        if(importlist.isOpen()){
+            QTextStream inlist(&importlist);
+            while(!inlist.atEnd()){
+//                singleimport(QString("%1/%2").arg(get_listpath(argv[1]),inlist.readLine()),argv[2],argv[3],argv[4]);
+                cout << QString("%1/%2").arg(get_listpath(argv[1]),inlist.readLine()) << endl;
+            }
+
+        } else {
+            qCritical() << "Import list couldn't be opened!";
+            return 0;
+        }
     }
-
-
     return 0;
-//    return a.exec();
 }
