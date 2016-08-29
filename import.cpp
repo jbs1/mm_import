@@ -16,10 +16,9 @@ QString get_listname(QString path){
 }
 
 
-void newlist(QString ln, QString mail, QString pw){
+void newlist(QString ln, QString mail, QString pw, QString mmpath){
     QProcess p_newlist;
-    p_newlist.setProcessChannelMode(QProcess::ForwardedChannels);
-    p_newlist.start("./bin/newlist", QStringList() << "-q" << ln << mail << pw);
+    p_newlist.start(QString("%1/bin/newlist").arg(mmpath), QStringList() << "-q" << ln << mail << pw);
     p_newlist.waitForFinished();
 
     QFile alias_file("/etc/aliases");
@@ -54,11 +53,11 @@ QString al=QString("%1:              \"|/var/lib/mailman/mail/mailman post %1\"\
     p_ps.waitForFinished();
 }
 
-void archive(QString listpath){
+void archive(QString listpath, QString mailmanpath){
     QFile arc(QString("%1.mbox").arg(listpath));
     if(arc.exists()){
         QProcess p_ar;
-        p_ar.start("./bin/arch", QStringList() << get_listname(listpath) << QString("%1.mbox/%2.mbox").arg(listpath,get_listname(listpath)));
+        p_ar.start(QString("%1/bin/arch").arg(mailmanpath), QStringList() << get_listname(listpath) << QString("%1.mbox/%2.mbox").arg(listpath,get_listname(listpath)));
         p_ar.waitForFinished();
     }
 }
@@ -73,24 +72,24 @@ int main(int argc, char *argv[])
     {
         cout << "This program allows you to import lists to mailman." << endl\
              << "Use it like this:" << endl\
-             << "import {[path &]filname} {owner-email} {list-password}" << endl;
+             << "import <filename/path import> <owner-email> <list-password> <mailman-dir>" << endl;
     } else {
-        newlist(get_listname(argv[1]),argv[2],argv[3]);
+        newlist(get_listname(argv[1]),argv[2],argv[3],argv[4]);
         cout<< "LIST CREATED: " << get_listname(argv[1]).toStdString() << endl;
 
         QProcess p_cflist;
-        p_cflist.start("./bin/config_list", QStringList() << "-i" << QString(argv[1]) << get_listname(argv[1]));
+        p_cflist.start(QString("%1/bin/config_list").arg(argv[4]), QStringList() << "-i" << QString(argv[1]) << get_listname(argv[1]));
         p_cflist.waitForFinished();
         cout<< "LIST CONFIGURED: " << get_listname(argv[1]).toStdString() << endl;
 
         QProcess p_fixurl;
-        p_fixurl.start("./bin/withlist", QStringList() << "-l" << "-r" << "fix_url" << get_listname(argv[1]));
+        p_fixurl.start(QString("%1/bin/withlist").arg(argv[4]), QStringList() << "-l" << "-r" << "fix_url" << get_listname(argv[1]));
         p_fixurl.waitForFinished();
         cout<< "FIXED URL: " << get_listname(argv[1]).toStdString() << endl;
 
 
         QProcess p_addmem;
-        p_addmem.start("./bin/add_members", QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << get_listname(argv[1]));
+        p_addmem.start(QString("%1/bin/add_members").arg(argv[4]), QStringList() << "-r" << QString("%1.subscribers").arg(argv[1]) << "-w" << "n" << "-a" << "n" << get_listname(argv[1]));
         p_addmem.waitForFinished();
         cout<< "ADDED MEMBERS: " << get_listname(argv[1]).toStdString() << endl;
 
@@ -100,12 +99,12 @@ int main(int argc, char *argv[])
         cout<< "EXEC GENAL: " << get_listname(argv[1]).toStdString() << endl;
 
         QProcess p_checkperm;
-        p_checkperm.start("./bin/check_perms", QStringList() << "-f");
+        p_checkperm.start(QString("%1/bin/check_perms").arg(argv[4]), QStringList() << "-f");
         p_checkperm.waitForFinished();
         cout<< "FIXED PERMS: " << get_listname(argv[1]).toStdString() << endl;
 
 
-        archive(argv[1]);
+        archive(argv[1],argv[4]);
         cout<< "ADDED ARCHIVES: " << get_listname(argv[1]).toStdString() << endl;
 
 
