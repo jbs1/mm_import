@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
     {
         cout << "This program allows you to import lists to mailman." << endl\
              << "Use it like this:" << endl\
-             << "import <filename/path import> <owner-email> <list-password> <mailman-dir>" << endl;
+             << "./mm_import <filename/path importlist> <owner-email> <list-password> <mailman-dir>" << endl;
     } else {
         QFile importlist(argv[1]);
         importlist.open(QIODevice::ReadOnly | QIODevice::Text);
