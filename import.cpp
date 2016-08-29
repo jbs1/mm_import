@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
              << "Use it like this:" << endl\
              << "import <filename/path import> <owner-email> <list-password> <mailman-dir>" << endl;
     } else {
-        singleimport(argv[1]),argv[2],argv[3],argv[4]);
+        singleimport(argv[1],argv[2],argv[3],argv[4]);
     }
 
 
